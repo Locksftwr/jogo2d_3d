@@ -1,91 +1,123 @@
-# jogo2d_3d
-# Banco Matemático 3D
+# 🎲 Banco Matemático 3D
 
-Jogo de tabuleiro educativo de matemática em 3D, feito em Python com a [Ursina Engine](https://www.ursinaengine.org/). De 1 a 4 jogadores rodam o dado, andam pelo tabuleiro e resolvem perguntas para ganhar pontos.
+Um jogo de tabuleiro 3D interativo e cinematográfico de perguntas e respostas matemáticas, desenvolvido em **Python** utilizando a engine de jogos **Ursina**. Criado para feiras de matemática e competições pedagógicas.
 
-> **Nota:** este é um protótipo com visual simples (cubos, esferas e botões). Ele é a versão 3D de um jogo que originalmente foi feito em tkinter.
+---
 
-## Como jogar
+## 📋 Pré-requisitos
 
-1. Escolha a quantidade de jogadores (1 a 4).
-2. Escolha a dificuldade das perguntas.
-3. Na sua vez, clique em **RODAR O DADO**. O peão anda casa a casa.
-4. Ao parar em uma casa normal, responda a pergunta:
-   - **Acertou:** ganha os pontos da casa.
-   - **Errou:** perde a penalidade da casa (a pontuação nunca fica abaixo de 0) e vê uma dica.
-5. Quem completar todo o percurso e voltar à casa de **INÍCIO/CHEGADA** vence a partida.
+Antes de começar, certifique-se de ter o **Python** instalado em seu computador (versão **3.10** ou superior).
 
-### Casas especiais
+Para verificar se o Python e o gerenciador de pacotes `pip` estão instalados, abra o terminal (PowerShell ou CMD) e digite:
 
-| Efeito | O que acontece |
-|--------|----------------|
-| `advance` (+2) | O peão avança 2 casas automaticamente, sem pergunta |
-| `back` (-2) | O peão volta 2 casas automaticamente, sem pergunta |
-| `skip` (PASSA) | Passa a vez, sem pergunta |
+```bash
+python --version
+pip --version
+```
 
-### Controles
+> **Dica:** Ao instalar o Python no Windows, certifique-se de marcar a caixa **"Add Python to PATH"** na primeira tela do instalador.
 
-- **Mouse:** botões de menu, dado e resposta.
-- **Enter:** confere a resposta e avança para o próximo jogador.
+---
 
-## Requisitos
+## 🚀 Como Baixar e Instalar as Bibliotecas Necessárias
 
-- Python 3.8 ou superior
-- [Ursina](https://www.ursinaengine.org/)
+O jogo utiliza a biblioteca **Ursina Engine** (que já inclui internamente as dependências 3D como Panda3D, Pillow e suporte a áudio OpenAL).
+
+### Método 1: Instalação Rápida (Direta)
+
+Abra o terminal na pasta onde o jogo está localizado e execute o seguinte comando:
+
+```bash
+pip install -r requirements.txt
+```
+
+Ou instale a biblioteca diretamente:
 
 ```bash
 pip install ursina
 ```
 
-## Como executar
+---
+
+### Método 2: Usando Ambiente Virtual (Recomendado)
+
+Criar um ambiente virtual isola as bibliotecas deste projeto e evita conflitos com outras instalações do seu sistema:
+
+#### 1. Criar o ambiente virtual:
+```bash
+python -m venv .venv
+```
+
+#### 2. Ativar o ambiente virtual:
+
+- **No Windows (PowerShell):**
+  ```powershell
+  .venv\Scripts\Activate.ps1
+  ```
+  *(Se aparecer erro de permissão no PowerShell, execute antes: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`)*
+
+- **No Windows (Prompt de Comando / CMD):**
+  ```cmd
+  .venv\Scripts\activate.bat
+  ```
+
+- **No Linux / macOS:**
+  ```bash
+  source .venv/bin/activate
+  ```
+
+#### 3. Instalar as bibliotecas no ambiente ativado:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🎮 Como Iniciar o Jogo
+
+Com as bibliotecas instaladas, inicie o jogo com o comando:
 
 ```bash
 python banco_matematico_3d.py
 ```
 
-O arquivo `questions_by_difficulty.py` precisa estar na mesma pasta do jogo.
+---
 
-## Estrutura do projeto
+## ⌨️ Controles e Atalhos
 
-```
-.
-├── banco_matematico_3d.py   # o jogo
-├── questions_by_difficulty.py    # perguntas, dificuldades e regras das casas
-└── README.md
-```
+| Comando | Ação |
+| :--- | :--- |
+| <kbd>Espaço</kbd> | Rola o dado 3D / Gira a Roleta da Sorte |
+| <kbd>Enter</kbd> | Confere a resposta digitada / Avança para a vez do próximo jogador |
+| <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> ou <kbd>Setas</kbd> | Gira e orbita a câmera 3D ao redor do tabuleiro |
+| <kbd>Scroll do Mouse</kbd> | Aproxima e afasta o zoom da câmera |
+| <kbd>C</kbd> | Liga / Desliga a Câmera Cinematográfica Dinâmica |
+| <kbd>R</kbd> | Restaura a câmera para a posição padrão de visão geral |
+| <kbd>Clique com o Mouse</kbd> | Clica nos botões da interface ou inspeciona qualquer casa do tabuleiro |
 
-## Personalizando perguntas e regras
+---
 
-Tudo fica no `questions_by_difficulty.py`, que precisa definir três coisas:
+## ✨ Recursos Especiais do Jogo
 
-```python
-# Lista de (valor, texto do botão)
-DIFFICULTY_LABELS = [("fácil", "Fácil"), ("médio", "Médio"), ("difícil", "Difícil")]
+- 🏆 **Peões Metálicos Nobres:** Acabamento em Ouro, Prata, Cobre e Bronze dependendo da quantidade de competidores.
+- 🔥 **Modo Overdrive (Combo x3):** Ao acertar 3 perguntas seguidas e atingir o multiplicador máximo de pontos, o tabuleiro escurece suavemente e a casa do jogador passa a piscar intensamente em chamas neon.
+- 🎰 **Casas de "Roleta da Sorte" (Douradas):** Casas especiais onde o jogador gira o dado em busca de sorte: tirar de 1 a 3 perde 5 pontos, tirar de 4 a 6 fatura 10 pontos instantâneos com comemoração.
+- 🔊 **Feedback Sonoro Completo (SFX):** Sons de rolagem de pedra do dado, salto elástico ("boing") do peão, alarme sonoro na contagem regressiva dos últimos 5 segundos vermelhos e moeda retro de vitória nos acertos.
+- 🥇 **Grande Troféu 3D:** Ergue-se no centro do tabuleiro ao lado do logotipo comemorativo da UESPI quando um jogador vence a partida.
+- ⏱️ **Tempo de Resposta Dinâmico:** 30 segundos nos níveis Fácil e Médio, e 45 segundos no nível Difícil, com barra de progresso gradiente (Verde ➔ Amarelo ➔ Vermelho) posicionada abaixo do campo de resposta.
+- 📜 **Placar de Recordes:** Salva a pontuação de todos os participantes no arquivo `leaderboard.json`.
 
-# Perguntas por dificuldade (as chaves são os valores acima)
-QUESTIONS_BY_DIFFICULTY = {
-    "fácil": [
-        {"tipo": "Soma", "pergunta": "Quanto é 2 + 2?", "resposta": "4", "dica": "É um número par."},
-    ],
-    "médio": [...],
-    "difícil": [...],
-}
+---
 
-# Regras por casa (índice começa em 0). Casas não listadas usam +1 ponto / -1 de penalidade
-HOUSE_RULES = {
-    5:  {"points": 2, "penalty": 1, "effect": "normal"},
-    8:  {"points": 0, "penalty": 0, "effect": "advance"},   # normal | advance | back | skip
-}
-```
+## ❓ Solução de Dúvidas e Problemas
 
-As respostas são comparadas ignorando maiúsculas, minúsculas e espaços.
+1. **`'pip' não é reconhecido como comando interno ou externo`**:
+   - Reinstale o Python marcando a opção **"Add Python to PATH"** ou adicione o caminho do Python manualmente nas Variáveis de Ambiente do Windows.
+2. **`Script de ativação do PowerShell bloqueado`**:
+   - Abra o PowerShell como Administrador ou usuário atual e rode:
+     ```powershell
+     Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+     ```
+3. **Sem som ou som baixo**:
+   - O jogo utiliza a biblioteca nativa OpenAL do Panda3D/Ursina. Verifique se o volume de saída do seu sistema e caixas de som/fones estão ativos.
 
-## Sobre o tabuleiro
-
-O tabuleiro tem 30 casas em formato de retângulo. A casa 0 é ao mesmo tempo o **INÍCIO** e a **CHEGADA**.
-
-## Limitações conhecidas
-
-- Visual simples, por ser um protótipo.
-- Não há tela para digitar o nome dos jogadores (eles se chamam Jogador 1, 2, 3 e 4).
-- Não há sons nem efeitos além do giro do dado e do movimento dos peões.
