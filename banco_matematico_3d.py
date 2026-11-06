@@ -294,6 +294,7 @@ class GameLogic:
         self.finished = False
         self.current_question = None
         self.available_questions = {}
+        self.used_questions = {}
 
     def create_board_cells(self):
         cells = [(col, 0) for col in range(COLS)]
@@ -316,6 +317,8 @@ class GameLogic:
         
         import copy
         self.available_questions = copy.deepcopy(QUESTIONS_BY_DIFFICULTY)
+        # Histórico das perguntas já sorteadas nesta partida (por dificuldade)
+        self.used_questions = {d: set() for d in QUESTIONS_BY_DIFFICULTY}
 
     @property
     def player(self):
@@ -339,14 +342,37 @@ class GameLogic:
         return False
 
     def draw_question(self):
-        pool = self.available_questions[self.difficulty]
+        """Sorteia uma questão SEM REPETIÇÃO.
+
+        - Cada pergunta já sorteada é registrada em `used_questions` e não volta
+          a ser escolhida enquanto houver perguntas inéditas na dificuldade.
+        - Só quando TODAS as perguntas da dificuldade já foram usadas o histórico
+          é zerado (novo ciclo), e mesmo assim a última pergunta mostrada não
+          pode ser a primeira do novo ciclo.
+        """
+        import copy
+
+        if not hasattr(self, "used_questions"):
+            self.used_questions = {}
+        used = self.used_questions.setdefault(self.difficulty, set())
+
+        all_questions = QUESTIONS_BY_DIFFICULTY.get(self.difficulty, [])
+        if not all_questions:
+            raise ValueError(f"Nenhuma questão cadastrada para a dificuldade '{self.difficulty}'.")
+
+        # Perguntas ainda não utilizadas (identificadas pelo texto da pergunta)
+        pool = [q for q in all_questions if q["pergunta"] not in used]
+
         if not pool:
-            import copy
-            self.available_questions[self.difficulty] = copy.deepcopy(QUESTIONS_BY_DIFFICULTY[self.difficulty])
-            pool = self.available_questions[self.difficulty]
-            
-        self.current_question = random.choice(pool)
-        pool.remove(self.current_question)
+            # Todas já foram usadas: inicia um novo ciclo
+            last = self.current_question["pergunta"] if self.current_question else None
+            used.clear()
+            pool = [q for q in all_questions if q["pergunta"] != last] or list(all_questions)
+
+        self.current_question = copy.deepcopy(random.choice(pool))
+        used.add(self.current_question["pergunta"])
+        self.available_questions[self.difficulty] = [
+            q for q in all_questions if q["pergunta"] not in used]
         return self.current_question
 
     def check_answer(self, text, timeout=False):
